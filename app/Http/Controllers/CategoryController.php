@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         // menampilkan post dengan category
-        $posts = $category->posts()->paginate(6);
+        $posts = $category->posts()->latest()->paginate(6);
         return view('post.index', compact('posts', 'category'));
     }
 }

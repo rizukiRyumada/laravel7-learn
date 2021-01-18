@@ -85,6 +85,8 @@ Route::get('/post/{post:slug}', 'PostController@show'); // untuk menampilkan sal
 
 // untuk menampilkan category
 Route::get('/categories/{category:slug}', 'CategoryController@show');
+// untuk menampilkan tag
+Route::get('/tags/{tag:slug}', 'TagController@show');
 
 /* ---------------- model binding dengan dua indentifier url ---------------- */
 // Route::get('/post/{category:slug}/{post:slug}', 'PostController@show');

@@ -59,4 +59,20 @@ class Post extends Model
         // return $this->belongsTo(Category::class); // dengan defaultnya fk 'category_id'
         return $this->belongsTo(Category::class, 'id_category');
     }
+
+    /**
+    * fungsi ini untuk mengidentifikasi relasi many-to-many ke Eloquent
+    *
+    * cara memanggilnya yaitu dengan cara seperti ini
+    * $post = Post::find(id);
+    * $post->tags; // akan muncul tag dari form
+    *
+    * @return belongsToMany(Class::class, 'post_tag')
+    */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+        // default parameter keduanya
+        // return belongsToMany(Tag::class, 'post_tag');
+    }
 }

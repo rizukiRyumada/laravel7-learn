@@ -7,9 +7,15 @@
     <div>
         @isset($category)
             <h4>Category: {{ $category->name }}</h4>
-        @else
-            <h4>All Post</h4>
         @endisset
+
+        @isset($tag)
+            <h4>Tag: {{ $tag->name }}</h4>
+        @endisset
+
+        @if(!isset($category) && !isset($tag))
+            <h4>All Post</h4>
+        @endif
     </div>
     <div>
         <a href="/post/create" class="btn btn-primary">+ New Post</a>
