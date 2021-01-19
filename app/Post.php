@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     // wajib menggunakan salah satu dari variabel ini
-    protected $fillable = ['title', 'body', 'slug']; // menandakan attribut apa saja yg dapat diisi oleh controller
+    protected $fillable = ['title', 'body', 'slug', 'id_category']; // menandakan attribut apa saja yg dapat diisi oleh controller
     // ATAU
     // protected $guarded = ['id', 'created_at', 'updated_at', 'edited_at']; // menandakan attribut apa saja yang tidak dapat diisi oleh controller
     /* -------------------------------------------------------------------------- */

@@ -1,4 +1,4 @@
-@extends('layouts.main', ['title' => 'Edit Post'])
+@extends('layouts.app', ['title' => 'Edit Post'])
 
 {{-- @section('page_title', 'New Post') --}}
 @section('content')

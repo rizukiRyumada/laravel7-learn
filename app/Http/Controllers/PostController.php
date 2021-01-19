@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
+// Menggunakan 1 line use
+use App\{Category, Post, Tag};
+// 3 line use
+// use App\Category;
+// use App\Post;
+// use App\Tag;
+
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
 
@@ -78,7 +84,9 @@ class PostController extends Controller
     {
         $button = '+ Create';
         $post = new Post;
-        return view('post.create', compact('post', 'button'));
+        $categories = Category::get();
+        $tags = Tag::get();
+        return view('post.create', compact('post', 'button', 'categories', 'tags'));
     }
 
     /**
@@ -89,7 +97,6 @@ class PostController extends Controller
      */
     public function store(PostRequest $request)
     {
-
         /* ------------------------ menambahkan validasi form ----------------------- */
         // cara pertama
         // $this->validate($request, [
@@ -178,11 +185,19 @@ class PostController extends Controller
         // $request['slug'] = \Str::slug(request('title'));
         // Post::create($request);
         /* ---------------- menggunakan request class untuk validasi ---------------- */
+        // masukan semua request ke attr
         $attr = $request->all();
+        // apabila menggunakan bawaan dari eloquent, nama attributnya harus category id, jika tidak set manual kyk gini
+        $attr['id_category'] = $attr['category'];
 
+        // buat slug title
         $attr['slug'] = \Str::slug($request->input('title'));
-        Post::create($attr);
 
+        // simpan ke database
+        $post = Post::create($attr);
+
+        // cara attach tags ke post yaitu dengan
+        $post->tags()->attach(request('tags'));
 
         // Buat session flash untuk notifikasi
         session()->flash('success', 'The Post was created');
@@ -199,7 +214,9 @@ class PostController extends Controller
      */
     public function edit(Post $post){
         $button = 'Update';
-        return view('post.edit', compact('post', 'button'));
+        $categories = Category::get();
+        $tags = Tag::get();
+        return view('post.edit', compact('post', 'button', 'categories', 'tags'));
     }
 
     /**
@@ -217,9 +234,12 @@ class PostController extends Controller
 
         /* ------------------- validasi menggunakan kelas request ------------------- */
         $attr = $request->all();
+        $attr['id_category'] = request('category'); // update category
 
         // update ke database
         $post->update($attr);
+        // cara update tags ke post yaitu dengan
+        $post->tags()->sync(request('tags'));
 
         // buat session flash untuk notifikasi
         session()->flash('success', 'The Post was updated');
@@ -235,6 +255,7 @@ class PostController extends Controller
      * @return void
      */
     public function destroy(Post $post){
+        $post->tags->detach(); // untuk menghapus tagsnya
         $post->delete();
         session()->flash('success', 'The post was successfully deleted');
         return redirect()->to('/post');
