@@ -3,6 +3,7 @@
 // use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request; // kelas request dari laravel
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +28,6 @@ use Illuminate\Http\Request; // kelas request dari laravel
 // memanggil controller biasa untuk laravel 7
 // Route::get('/', 'HomeController@index');
 // memanggil controller dengan invokable method untuk laravel 7
-Route::get('/', 'HomeController');
 
 Route::view('contact', 'contact');
 
@@ -62,7 +62,10 @@ Route::view('login', 'login');
  * cara agar dia bisa liat dari slug lagi yaitu dengan menmbahkan function getRouteKeyName() pada model Post
  */
 
-Route::get('/post', "PostController@index"); // untuk menampilkan halaman index Post
+// Route::get('/post', "PostController@index"); // untuk menampilkan halaman index Post
+
+/* ------------------------- menggunakan named route ------------------------ */
+Route::get('/post', "PostController@index")->name('post.index'); // untuk menampilkan halaman index Post
 
 // menampilkan form create dan menyimpan post
 Route::get('/post/create', 'PostController@create'); // untuk menampilkan form
@@ -90,3 +93,7 @@ Route::get('/tags/{tag:slug}', 'TagController@show');
 
 /* ---------------- model binding dengan dua indentifier url ---------------- */
 // Route::get('/post/{category:slug}/{post:slug}', 'PostController@show');
+
+Auth::routes();
+
+Route::get('/', 'HomeController@index')->name('home');

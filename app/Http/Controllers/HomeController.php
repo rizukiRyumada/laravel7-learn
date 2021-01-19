@@ -1,7 +1,4 @@
-<?php // invokable controller dengan hanya satu method yg akan dipanggil, method lainnya akan diabaikan
-
-// cara memanggilnya di route web.php
-// Route::get('/', 'HomeController');
+<?php
 
 namespace App\Http\Controllers;
 
@@ -10,41 +7,22 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * Create a new controller instance.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function __invoke(Request $request)
+    public function __construct()
     {
-        // memanggil view dengan membawa variable + fungsi compact
-        // $name = "Ryumada";
-        // $name = $request->name; // mengambil data dari request name variable
-        $name = request('name'); // mengambil data dari request function name
-        return view('home', compact('name'));
+        $this->middleware('auth');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('home');
     }
 }
-
-/* -------------------------------------------------------------------------- */
-
-// controller biasa dengan method lainya yg bisa dipanggil langsung dri routes
-
-// cara memanggilnya di route web.php
-// Route::get('/', 'HomeController@index');
-
-// namespace App\Http\Controllers;
-
-
-// class HomeController extends Controller
-// {
-//     public function index(){
-//         // return request('name');
-
-//         // memanggil view dengan membawa array
-//         // return view('home', ['name' => request('name')]);
-
-//         // memanggil view dengan membawa variable + fungsi compact
-//         $name = "Ryumada";
-//         return view('home', compact('name'));
-//     }
-// }
