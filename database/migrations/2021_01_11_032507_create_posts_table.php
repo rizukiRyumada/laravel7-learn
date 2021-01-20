@@ -16,6 +16,8 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             // langsung menggunakan objek variabel $table dengan objek keduanya tipe attributnya
             $table->id();
+            $table->foreignId('user_id');
+            $table->string('thumbnail');
             $table->string('title', 191);
             $table->string('slug', 191);
             $table->text('body');

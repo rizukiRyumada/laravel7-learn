@@ -14,7 +14,7 @@ class AddCategoryIdToPostsTable extends Migration
     public function up()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->foreignId('category_id')->nullable()->after('id');
+            $table->foreignId('id_category')->nullable()->after('id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddCategoryIdToPostsTable extends Migration
     public function down()
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('category_id');
+            $table->dropColumn('id_category');
         });
     }
 }

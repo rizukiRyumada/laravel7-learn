@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    // definisikan kolom apa aja yang bisa diisi
+    protected $fillable = ['name', 'slug'];
 
 /* -------------------------------------------------------------------------- */
 /*                                relasi tabel                                */

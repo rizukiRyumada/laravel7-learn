@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
+    protected $fillable = ['name', 'slug'];
     /**
     * fungsi ini untuk mengidentifikasikan relasi many-to-many ke Eloquent
     *
