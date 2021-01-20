@@ -68,7 +68,7 @@ Route::view('login', 'login');
 Route::get('/post', "PostController@index")->name('post.index'); // untuk menampilkan halaman index Post
 
 // menampilkan form create dan menyimpan post
-Route::get('/post/create', 'PostController@create'); // untuk menampilkan form
+Route::get('/post/create', 'PostController@create')->name('post.create'); // untuk menampilkan form
 Route::post('/post/store', 'PostController@store'); // untuk menyimpan post
 
 /* -------- model binding dengan langsung mengidentifikasi nama slug -------- */

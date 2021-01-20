@@ -15,6 +15,17 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
+    * this method will always run first if you call one of below method
+    *
+    * @return void
+    */
+    public function __construct()
+    {
+        // load middleware auth, cek semua method kecuali method index
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
+    /**
      * fungsi untuk menampilkan posts
      *
      * @return void

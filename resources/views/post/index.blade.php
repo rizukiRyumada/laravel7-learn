@@ -18,7 +18,12 @@
         @endif
     </div>
     <div>
-        <a href="/post/create" class="btn btn-primary">+ New Post</a>
+        {{-- cek autentikasi dengan if Auth::check() untuk menampilkan tombol --}}
+        @if(Auth::check())
+            <a href="{{ route('post.create') }}" class="btn btn-primary">+ New Post</a>
+        @else
+            <a href="{{ route('login') }}" class="btn btn-primary">Login to create new post</a>
+        @endif
     </div>
 </div>
 <hr>
@@ -49,7 +54,10 @@
                         {{-- mengubah tulisan englishnya menjadi indonesia ada di config/app cari locale ubah dari en ke id --}}
                     </div>
                     <div>
-                        <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
+                        {{-- menggunakan auth blade redirected --}}
+                        @auth
+                            <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
+                        @endauth
                     </div>
                 </div>
             </div>
