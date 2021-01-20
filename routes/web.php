@@ -62,30 +62,6 @@ Route::view('login', 'login');
  * cara agar dia bisa liat dari slug lagi yaitu dengan menmbahkan function getRouteKeyName() pada model Post
  */
 
-// Route::get('/post', "PostController@index"); // untuk menampilkan halaman index Post
-
-/* ------------------------- menggunakan named route ------------------------ */
-Route::get('/post', "PostController@index")->name('post.index'); // untuk menampilkan halaman index Post
-
-// menampilkan form create dan menyimpan post
-Route::get('/post/create', 'PostController@create')->name('post.create'); // untuk menampilkan form
-Route::post('/post/store', 'PostController@store'); // untuk menyimpan post
-
-/* -------- model binding dengan langsung mengidentifikasi nama slug -------- */
-// menampilkan form update dan menyimpan post
-Route::get('/post/{post:slug}/edit', 'PostController@edit'); // untuk menampilkan form update per post
-Route::patch('/post/{post:slug}/edit', 'PostController@update'); // untuk mengupdate post
-/**
- * ada 2 metode untuk mengupdate,
- * - patch -> untuk mengupdate sebagian data attribut pada tabel
- * - put -> untuk mengupdate keseluruhan data attribut pada tabel
- */
-
-// menghapus post
-Route::delete('/post/{post:slug}/delete', 'PostController@destroy');
-
-Route::get('/post/{post:slug}', 'PostController@show'); // untuk menampilkan salah satu form
-
 // untuk menampilkan category
 Route::get('/categories/{category:slug}', 'CategoryController@show');
 // untuk menampilkan tag
@@ -97,3 +73,74 @@ Route::get('/tags/{tag:slug}', 'TagController@show');
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+/* -------------------------------------------------------------------------- */
+
+
+/* -------------------------------------------------------------------------- */
+/*                              Route Group Tanpa                             */
+/* -------------------------------------------------------------------------- */
+/**
+ * menambahkan middleware pada setiap route untuk autentikasi
+ */
+// Route::get('/post', "PostController@index"); // untuk menampilkan halaman index Post
+
+/* ------------------------- menggunakan named route ------------------------ */
+// Route::get('/post', "PostController@index")->name('post.index'); // untuk menampilkan halaman index Post
+
+// menampilkan form create dan menyimpan post
+// Route::get('/post/create', 'PostController@create')->middleware('auth')->name('post.create'); // untuk menampilkan form
+// Route::post('/post/store', 'PostController@store')->middleware('auth'); // untuk menyimpan post
+
+/* -------- model binding dengan langsung mengidentifikasi nama slug -------- */
+// menampilkan form update dan menyimpan post
+// Route::get('/post/{post:slug}/edit', 'PostController@edit')->middleware('auth'); // untuk menampilkan form update per post
+// Route::patch('/post/{post:slug}/edit', 'PostController@update')->middleware('auth'); // untuk mengupdate post
+/**
+ * ada 2 metode untuk mengupdate,
+ * - patch -> untuk mengupdate sebagian data attribut pada tabel
+ * - put -> untuk mengupdate keseluruhan data attribut pada tabel
+ */
+
+// menghapus post
+// Route::delete('/post/{post:slug}/delete', 'PostController@destroy')->middleware('auth');
+
+// Route::get('/post/{post:slug}', 'PostController@show'); // untuk menampilkan salah satu form
+
+/* -------------------------------------------------------------------------- */
+/*                                 ROUTE GROUP                                */
+/* -------------------------------------------------------------------------- */
+/**
+ * menambahkan middleware ke Route::group()
+ *
+ * menggunakan prefix untuk menambahkan kata2 sebelum route
+ * - apabila ingin menggunakan prefix, pastikan url route yang ada slugnya ditaruh dibawah route group agar
+ *   php ga menganggap kalo url bagian ke dua itu slug di Route::group, sehingga route jadi berantakan
+ */
+Route::prefix('post')->middleware('auth')->group(function () {
+    // Route::get('/post', "PostController@index"); // untuk menampilkan halaman index Post
+
+    /* ------------------------- menggunakan named route ------------------------ */
+    // Route::get('/post', "PostController@index")->name('post.index')->withoutMiddleware('auth'); // untuk menampilkan halaman index Post
+
+    // menampilkan form create dan menyimpan post
+    Route::get('/create', 'PostController@create')->name('post.create'); // untuk menampilkan form
+    Route::post('/store', 'PostController@store'); // untuk menyimpan post
+
+    /* -------- model binding dengan langsung mengidentifikasi nama slug -------- */
+    // menampilkan form update dan menyimpan post
+    Route::get('/{post:slug}/edit', 'PostController@edit'); // untuk menampilkan form update per post
+    Route::patch('/{post:slug}/edit', 'PostController@update'); // untuk mengupdate post
+    /**
+     * ada 2 metode untuk mengupdate,
+     * - patch -> untuk mengupdate sebagian data attribut pada tabel
+     * - put -> untuk mengupdate keseluruhan data attribut pada tabel
+     */
+
+    // menghapus post
+    Route::delete('/post/{post:slug}/delete', 'PostController@destroy');
+
+    // Route::get('/post/{post:slug}', 'PostController@show')->withoutMiddleware('auth'); // untuk menampilkan salah satu form
+});
+
+Route::get('/post', "PostController@index")->name('post.index'); // untuk menampilkan halaman index Post
+Route::get('/post/{post:slug}', 'PostController@show'); // untuk menampilkan salah satu form
