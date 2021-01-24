@@ -17,11 +17,11 @@ class CreatePostsTable extends Migration
             // langsung menggunakan objek variabel $table dengan objek keduanya tipe attributnya
             $table->id();
             $table->foreignId('user_id');
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
             $table->string('title', 191);
             $table->string('slug', 191);
             $table->text('body');
-            $table->timestamp('edited_at');
+            // $table->timestamp('edited_at');
             $table->timestamps();
         });
     }

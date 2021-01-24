@@ -75,4 +75,24 @@ class Post extends Model
         // default parameter keduanya
         // return belongsToMany(Tag::class, 'post_tag');
     }
+
+/* -------------------------------------------------------------------------- */
+/*                        menambahkan author untuk post                       */
+/* -------------------------------------------------------------------------- */
+
+    /**
+    * fungsi ini untuk mengidentifikasi bahwa user dan post punya relasi,
+    * apabila namanya berbeda dengan nama id harus ditambahkan identifier
+    *
+    * @return belongsTo(User::class, 'user_id')
+    */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    //     return $this->belongsTo(User::class, 'user_id'); // akan langsung otomatis identifiernya user_id
+    // }
 }

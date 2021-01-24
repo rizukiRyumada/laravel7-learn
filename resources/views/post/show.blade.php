@@ -16,4 +16,7 @@
     </div>
     <hr>
     <p>{{ $post->body }}</p>
+    <div class="text-secondary">
+        Wrote by {{ $post->author->name }}
+    </div>
 @endsection

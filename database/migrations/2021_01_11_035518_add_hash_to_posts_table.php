@@ -13,10 +13,10 @@ class AddHashToPostsTable extends Migration
      */
     public function up()
     {
-        Schema::table('posts', function (Blueprint $table) {
-            // menambahkan attribut hash ke tabel posts
-            $table->string('hash')->after('title')->nullable();
-        });
+        // Schema::table('posts', function (Blueprint $table) {
+        //     // menambahkan attribut hash ke tabel posts
+        //     $table->string('hash')->after('title')->nullable();
+        // });
     }
 
     /**

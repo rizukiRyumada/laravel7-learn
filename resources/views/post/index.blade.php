@@ -55,9 +55,16 @@
                     </div>
                     <div>
                         {{-- menggunakan auth blade redirected --}}
-                        @auth
+                        {{-- @auth
                             <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
-                        @endauth
+                        @endauth --}}
+
+                        {{-- if is me?, edit my post pls --}}
+                        {{-- @if(Auth::user()->id == $post->user_id) --}}
+                        {{-- atau --}}
+                        {{-- @if(Auth::user()->is($post->author)) --}}
+                            <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
+                        {{-- @endif --}}
                     </div>
                 </div>
             </div>

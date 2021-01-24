@@ -19,7 +19,7 @@ class RefreshDatabaseCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'refresh:database';
+    protected $signature = 'ryu:database';
 
     /**
      * The console command description.

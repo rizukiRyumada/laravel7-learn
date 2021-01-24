@@ -8,7 +8,7 @@
 <div class="mb-3">
     <label class="form-label" for="category">Category</label>
     <select name="category" id="category" class="form-select @error('category') is-invalid @enderror" aria-label="Category Select">
-        <option value=""></option>
+        <option value="" selected disabled>Select One</option>
         @foreach($categories as $category)
             <option {{ $category->id == $post->id_category ? 'selected' : '' }} value="{{ $category->id }}">{{ $category->name }}</option>
         @endforeach

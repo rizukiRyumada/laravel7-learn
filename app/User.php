@@ -36,4 +36,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+    * identifikasi bahwa satu user dapat memiliki banyak post, dengan menggunakan penamaan plural
+    *
+    * @return hasMany(Post::class)
+    */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

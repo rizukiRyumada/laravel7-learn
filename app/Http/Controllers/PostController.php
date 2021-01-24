@@ -11,6 +11,7 @@ use App\{Category, Post, Tag};
 
 use App\Http\Requests\PostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -189,12 +190,16 @@ class PostController extends Controller
         $attr = $request->all();
         // apabila menggunakan bawaan dari eloquent, nama attributnya harus category id, jika tidak set manual kyk gini
         $attr['id_category'] = $attr['category'];
+        $attr['user_id'] = auth()->id();
 
         // buat slug title
         $attr['slug'] = \Str::slug($request->input('title'));
 
-        // simpan ke database
-        $post = Post::create($attr);
+        // simpan ke database dan menyimpan user yg membuatnya
+        // dd(Auth::user()->posts()); // melihat siapa yg login
+        $post = Auth::user()->posts()->create($attr);
+        // ATAU
+        // $post = auth()->user()->posts()->create($attr);
 
         // cara attach tags ke post yaitu dengan
         $post->tags()->attach(request('tags'));
@@ -213,10 +218,20 @@ class PostController extends Controller
      * @return void
      */
     public function edit(Post $post){
-        $button = 'Update';
-        $categories = Category::get();
-        $tags = Tag::get();
-        return view('post.edit', compact('post', 'button', 'categories', 'tags'));
+        // if(Auth::user()->is($post->author)){
+            // ATAU
+        if(auth()->user()->is($post->author)){
+            // dd('ya itu post mu');
+            $button = 'Update';
+            $categories = Category::get();
+            $tags = Tag::get();
+            return view('post.edit', compact('post', 'button', 'categories', 'tags'));
+        } else {
+            // dd('salah');
+            // abort(403, 'Unauthorized action.');
+            session()->flash('error', "It wasn't your post.");
+            return redirect('post');
+        }
     }
 
     /**
@@ -233,20 +248,27 @@ class PostController extends Controller
         // $attr = $this->validateRequest();
 
         /* ------------------- validasi menggunakan kelas request ------------------- */
-        $attr = $request->all();
-        $attr['id_category'] = request('category'); // update category
+        if(auth()->user()->is($post->author)){
+            $attr = $request->all();
+            $attr['id_category'] = request('category'); // update category
 
-        // update ke database
-        $post->update($attr);
-        // cara update tags ke post yaitu dengan
-        $post->tags()->sync(request('tags'));
+            // update ke database
+            $post->update($attr);
+            // cara update tags ke post yaitu dengan
+            $post->tags()->sync(request('tags'));
 
-        // buat session flash untuk notifikasi
-        session()->flash('success', 'The Post was updated');
+            // buat session flash untuk notifikasi
+            session()->flash('success', 'The Post was updated');
 
-        // kembalikan ke halaman sebelumnya
-        return redirect()->to('post');
-        // return back();
+            // kembalikan ke halaman sebelumnya
+            return redirect()->to('post');
+            // return back();
+        } else {
+            // dd('salah');
+            // abort(403, 'Unauthorized action.');
+            session()->flash('error', "It wasn't your post.");
+            return redirect('post');
+        }
     }
 
     /**
@@ -255,10 +277,17 @@ class PostController extends Controller
      * @return void
      */
     public function destroy(Post $post){
-        $post->tags->detach(); // untuk menghapus tagsnya
-        $post->delete();
-        session()->flash('success', 'The post was successfully deleted');
-        return redirect()->to('/post');
+        if(auth()->user()->is($post->author)){
+            $post->tags->detach(); // untuk menghapus tagsnya
+            $post->delete();
+            session()->flash('success', 'The post was successfully deleted');
+            return redirect()->to('/post');
+        } else {
+            // dd('salah');
+            // abort(403, 'Unauthorized action.');
+            session()->flash('error', "It wasn't your post.");
+            return redirect('post');
+        }
     }
 
 /* -------------------------------------------------------------------------- */
