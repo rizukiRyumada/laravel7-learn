@@ -1,6 +1,9 @@
 <div class="mb-3">
     <label for="thumbnail" class="form-label">Thumbnail</label>
-    <input class="form-control" type="file" id="thumbnail" name="thumbnail">
+    <input class="form-control @error('thumbnail') is-invalid @enderror" value="{{ old('thumbnail') ?? $post->thumbnail }}" type="file" id="thumbnail" name="thumbnail">
+    @error('thumbnail')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
 </div>
 <div class="mb-3">
     <label class="form-label" for="title">Title</label>

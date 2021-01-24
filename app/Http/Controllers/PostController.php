@@ -199,7 +199,7 @@ class PostController extends Controller
         $thumbnail = request()->file('thumbnail');
         // menyimpan thumbnail dengan mengubah namanya
         // $thumbnailUrl = $thumbnail->storeAs('images/post', "{$slug}.{$thumbnail->extension()}");
-        $thumbnailUrl = $thumbnail->store('images/post');
+        $thumbnailUrl = $thumbnail ? $thumbnail->store('images/post') : null;
 
         // apabila menggunakan bawaan dari eloquent, nama attributnya harus category id, jika tidak set manual kyk gini
         $attr['id_category'] = $attr['category'];
