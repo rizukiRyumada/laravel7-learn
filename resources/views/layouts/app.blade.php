@@ -33,4 +33,5 @@
         </main>
     </div>
 </body>
+<script src="{{ asset('js/app_main.js') }}"></script>
 </html>

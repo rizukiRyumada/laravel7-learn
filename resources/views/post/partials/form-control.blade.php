@@ -25,11 +25,18 @@
             <option selected value="{{ $tag->id }}">{{ $tag->name }}</option>
         @endforeach
         @foreach($tags as $tag)
+            {{-- beri tag buat penanda kalo tag itu ada kosong atau tidak --}}
+            {{ $flag_tag = 0 }}
             @foreach ($post->tags as $tag_post)
-                @if($tag->id != $tag_post->id)
-                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                {{-- cek apa tag ada pada post? --}}
+                @if($tag->id == $tag_post->id)
+                    {{ $flag_tag = 1 }}
                 @endif
             @endforeach
+            {{-- cek apa tag betul2 gaada, kalo gaada taruh dalam option --}}
+            @if($flag_tag == 0)
+                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+            @endif
         @endforeach
     </select>
     @error('tags')

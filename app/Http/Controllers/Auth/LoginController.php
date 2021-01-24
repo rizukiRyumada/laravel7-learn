@@ -37,4 +37,15 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+    * Identifier untuk menandakan username untuk login
+    * Bisa berupa: Email, NIM, atau username
+    *
+    * @return $
+    */
+    public function username()
+    {
+        return 'username'; // memberi tahu auth kalo usernamenya itu username
+    }
 }
