@@ -46,4 +46,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+    /**
+    * untuk mengidentifikasi apakah dia admin, cara kerja sistem role sederhana
+    *
+    * @return boolean
+    */
+    public function isAdmin()
+    {
+        // return $this->username == "rizukiRyumada" ? true : false;
+        // ATAU
+        return $this->username == "rizukiRyumada"; // ini ada di AuthServiceProvider trueFalsenya
+    }
 }

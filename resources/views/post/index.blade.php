@@ -62,9 +62,14 @@
                         {{-- if is me?, edit my post pls --}}
                         {{-- @if(Auth::user()->id == $post->user_id) --}}
                         {{-- atau --}}
-                        @if(Auth::user()->is($post->author))
+                        {{-- @if(Auth::user()->is($post->author))
                             <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
-                        @endif
+                        @endif --}}
+
+                        {{-- menggunakan policy --}}
+                        @can('edit', $post)
+                            <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
+                        @endcan
                     </div>
                 </div>
             </div>

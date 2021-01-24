@@ -220,18 +220,19 @@ class PostController extends Controller
     public function edit(Post $post){
         // if(Auth::user()->is($post->author)){
             // ATAU
-        if(auth()->user()->is($post->author)){
+        // if(auth()->user()->is($post->author)){
             // dd('ya itu post mu');
+            $this->authorize('edit', $post);
             $button = 'Update';
             $categories = Category::get();
             $tags = Tag::get();
             return view('post.edit', compact('post', 'button', 'categories', 'tags'));
-        } else {
+        // } else {
             // dd('salah');
             // abort(403, 'Unauthorized action.');
-            session()->flash('error', "It wasn't your post.");
-            return redirect('post');
-        }
+            // session()->flash('error', "It wasn't your post.");
+            // return redirect('post');
+        // }
     }
 
     /**
@@ -248,27 +249,21 @@ class PostController extends Controller
         // $attr = $this->validateRequest();
 
         /* ------------------- validasi menggunakan kelas request ------------------- */
-        if(auth()->user()->is($post->author)){
-            $attr = $request->all();
-            $attr['id_category'] = request('category'); // update category
+        $this->authorize('update', $post); // menggunakan policy untuk cek otorisasi
+        $attr = $request->all();
+        $attr['id_category'] = request('category'); // update category
 
-            // update ke database
-            $post->update($attr);
-            // cara update tags ke post yaitu dengan
-            $post->tags()->sync(request('tags'));
+        // update ke database
+        $post->update($attr);
+        // cara update tags ke post yaitu dengan
+        $post->tags()->sync(request('tags'));
 
-            // buat session flash untuk notifikasi
-            session()->flash('success', 'The Post was updated');
+        // buat session flash untuk notifikasi
+        session()->flash('success', 'The Post was updated');
 
-            // kembalikan ke halaman sebelumnya
-            return redirect()->to('post');
-            // return back();
-        } else {
-            // dd('salah');
-            // abort(403, 'Unauthorized action.');
-            session()->flash('error', "It wasn't your post.");
-            return redirect('post');
-        }
+        // kembalikan ke halaman sebelumnya
+        return redirect()->to('post');
+        // return back();
     }
 
     /**
@@ -277,6 +272,7 @@ class PostController extends Controller
      * @return void
      */
     public function destroy(Post $post){
+        // menggunakan if untuk cek otorisasi
         if(auth()->user()->is($post->author)){
             $post->tags->detach(); // untuk menghapus tagsnya
             $post->delete();
