@@ -1,4 +1,8 @@
 <div class="mb-3">
+    <label for="thumbnail" class="form-label">Thumbnail</label>
+    <input class="form-control" type="file" id="thumbnail" name="thumbnail">
+</div>
+<div class="mb-3">
     <label class="form-label" for="title">Title</label>
     <input type="text" name="title" id="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') ?? $post->title }}">
     @error('title')

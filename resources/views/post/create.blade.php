@@ -16,7 +16,7 @@
         <div class="card">
             <div class="card-header">New Post</div>
             <div class="card-body">
-                <form action="/post/store" method="post">
+                <form action="/post/store" method="post" enctype="multipart/form-data">
                     {{-- wajib menambahkan csrf protection pada setiap form kalo engga bakal error 419|page expired --}}
                     @csrf
                     @include('post/partials/form-control')

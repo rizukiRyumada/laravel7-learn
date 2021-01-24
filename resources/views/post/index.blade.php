@@ -33,16 +33,33 @@
     @forelse ($posts as $post)
         <div class="col-lg-4 mb-4">
             <div class="card">
-                <div class="card-header">
-                    {{ $post->title }}
-                </div>
+                {{-- tidak akan muncul dengan cara ini --}}
+                {{-- <img src="{{ asset($post->thumbnail) }}" class="card-img-top" alt="..."> --}}
+                {{-- muncul, tapi akan sangat berantakan --}}
+                {{-- <img src="{{ asset("storage/".$post->thumbnail) }}" class="card-img-top" alt="..."> --}}
+                {{-- menggunakan function takeImage() --}}
+                {{-- <img src="{{ asset($post->takeImage()) }}" class="card-img-top" alt="..."> --}}
+                {{-- menggunakan attribute takeImage, nama functionnya jadi getTakeImageAttribute, get...Attribute --}}
+                {{-- <img src="{{ asset($post->takeImage) }}" class="card-img-top" alt="..."> --}}
+                {{-- tanpa menggunakan asset --}}
+                <img src="{{ $post->takeImage }}" class="card-img-top" style="
+                    height: 270px;
+                    object-fit: cover;
+                    object-position: center;
+                ">
+
                 <div class="card-body">
-                    {{-- menampilkan post dengan limit karakter --}}
-                    <div class="mb-2">
-                        {{ Str::limit($post->body, 100, '') }}
+                    <div class="card-title font-weight-bold">
+                        {{ $post->title }}
                     </div>
-                    <div class="">
-                        <a href="/post/{{ $post->slug }}" >Read more...</a>
+                    <div class="card-text">
+                        {{-- menampilkan post dengan limit karakter --}}
+                        <div class="mb-2">
+                            {{ Str::limit($post->body, 100, '') }}
+                        </div>
+                        <div class="">
+                            <a href="/post/{{ $post->slug }}" >Read more...</a>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer d-flex justify-content-between">

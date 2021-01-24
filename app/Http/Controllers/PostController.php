@@ -185,16 +185,32 @@ class PostController extends Controller
 
         // $request['slug'] = \Str::slug(request('title'));
         // Post::create($request);
+
         /* ---------------- menggunakan request class untuk validasi ---------------- */
         // masukan semua request ke attr
         $attr = $request->all();
-        // apabila menggunakan bawaan dari eloquent, nama attributnya harus category id, jika tidak set manual kyk gini
-        $attr['id_category'] = $attr['category'];
-        $attr['user_id'] = auth()->id();
 
         // buat slug title
-        $attr['slug'] = \Str::slug($request->input('title'));
+        $slug = \Str::slug($request->input('title'));
+        $attr['slug'] = $slug;
 
+        /* -------------------------- melihat request file -------------------------- */
+        // dd(request()->file('thumbnail'));
+        $thumbnail = request()->file('thumbnail');
+        // menyimpan thumbnail dengan mengubah namanya
+        // $thumbnailUrl = $thumbnail->storeAs('images/post', "{$slug}.{$thumbnail->extension()}");
+        $thumbnailUrl = $thumbnail->store('images/post');
+
+        // apabila menggunakan bawaan dari eloquent, nama attributnya harus category id, jika tidak set manual kyk gini
+        $attr['id_category'] = $attr['category'];
+        $attr['thumbnail'] = $thumbnailUrl;
+        // jangan lupa jalankan kode ini di teminal
+        // -------------------------
+        // php artisan storage:link
+        // -------------------------
+        // gunanya untuk menghubungkan folder storage ke folder root public laravel
+
+        // $attr['user_id'] = auth()->id();
         // simpan ke database dan menyimpan user yg membuatnya
         // dd(Auth::user()->posts()); // melihat siapa yg login
         $post = Auth::user()->posts()->create($attr);
@@ -251,7 +267,23 @@ class PostController extends Controller
         /* ------------------- validasi menggunakan kelas request ------------------- */
         $this->authorize('update', $post); // menggunakan policy untuk cek otorisasi
         $attr = $request->all();
+
+        // dd(request()->file('thumbnail'));
+        $thumbnail = request()->file('thumbnail');
+        // cek jika ada request
+        if($thumbnail){
+            // hapus dulu file lama
+            \Storage::delete($post->thumbnail);
+            // menyimpan thumbnail dengan mengubah namanya
+            // $thumbnailUrl = $thumbnail->storeAs('images/post', "{$slug}.{$thumbnail->extension()}");
+            // ganti degnan nama file yang baru
+            $thumbnailUrl = $thumbnail->store('images/post');
+        } else {
+            $thumbnailUrl = $post->thumbnail;
+        }
+
         $attr['id_category'] = request('category'); // update category
+        $attr['thumbnail'] = $thumbnailUrl;
 
         // update ke database
         $post->update($attr);
@@ -277,6 +309,7 @@ class PostController extends Controller
             $post->tags->detach(); // untuk menghapus tagsnya
             $post->delete();
             session()->flash('success', 'The post was successfully deleted');
+            \Storage::delete($post->thumbnail); // hapus file fotonya
             return redirect()->to('/post');
         } else {
             // dd('salah');

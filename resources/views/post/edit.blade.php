@@ -16,7 +16,7 @@
         <div class="card">
             <div class="card-header">Update Post: {{ $post->title }} </div>
             <div class="card-body">
-                <form action="/post/{{ $post->slug }}/edit" method="post">
+                <form action="/post/{{ $post->slug }}/edit" method="post" enctype="multipart/form-data">
                     {{-- tambahkan method patch untuk mengenalkan method form update ini --}}
                     @method('patch')
                     {{-- wajib menambahkan csrf protection pada setiap form kalo engga bakal error 419|page expired --}}
