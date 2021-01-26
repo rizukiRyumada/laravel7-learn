@@ -11,16 +11,10 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link{{ request()->is('/') ? ' active' : '' }}" aria-current="page" href="/">Home</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link{{ request()->is('about') ? ' active' : '' }}" href="/about">About</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link{{ request()->is('contact') ? ' active' : '' }}" href="/contact">Contact</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link{{ request()->is('login') ? ' active' : '' }}" href="/login">Login</a>
                 </li>
                 {{-- tanpa menggunakan named route --}}
                 {{-- <li class="nav-item">
@@ -51,6 +45,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a href="{{ route('post.create') }}" class="dropdown-item">New Post</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">

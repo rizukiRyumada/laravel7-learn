@@ -29,8 +29,12 @@ class PostController extends Controller
         // $posts = Post::get(); // mengambil semua data post
         // $posts = Post::limit(2)->get(); // mengambil data post dengan dilimit 2 post saja
 
+        // lihat perbandingan menggunakan with dan tidak
+        // return Post::with('author', 'tags', 'category')->latest()->get();
+        // return Post::latest()->get();
+
         /* ------------------------------- pagination ------------------------------- */
-        $posts = Post::latest()->paginate(6); // mengambil data post dengan paginasi 2 post disetiap request
+        $posts = Post::with('author', 'tags', 'category')->latest()->paginate(6); // mengambil data post dengan paginasi 2 post disetiap request
         // $posts = Post::simplePaginate(2); // mengambil data post dengan paginasi 2 post disetiap request, dengan pagination next dan previous
         return view('post.index', ['posts' => $posts]);
     }
@@ -67,8 +71,10 @@ class PostController extends Controller
         // dengan firtsOrFail(), memanggil langsung 404 jika tidak ada
         // $post = Post::where('slug', $slug)->firstOrFail();
 
+        $posts = Post::with('author', 'tags', 'category')->where('id_category', $post->id_category)->latest()->limit(6)->get();
+
         // mengirim slug ke view
-        return view('post.show', compact('post'));
+        return view('post.show', compact('post', 'posts'));
     }
 
 /* ---------------------- apabila ada 2 url identifier ---------------------- */
