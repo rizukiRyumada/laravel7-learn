@@ -63,9 +63,9 @@ Route::view('login', 'login');
  */
 
 // untuk menampilkan category
-Route::get('/categories/{category:slug}', 'CategoryController@show');
+Route::get('/categories/{category:slug}', 'CategoryController@show')->name('categories.show');
 // untuk menampilkan tag
-Route::get('/tags/{tag:slug}', 'TagController@show');
+Route::get('/tags/{tag:slug}', 'TagController@show')->name('tag.show');
 
 /* ---------------- model binding dengan dua indentifier url ---------------- */
 // Route::get('/post/{category:slug}/{post:slug}', 'PostController@show');
@@ -137,10 +137,10 @@ Route::prefix('post')->middleware('auth')->group(function () {
      */
 
     // menghapus post
-    Route::delete('/post/{post:slug}/delete', 'PostController@destroy');
+    Route::delete('/{post:slug}/delete', 'PostController@destroy');
 
     // Route::get('/post/{post:slug}', 'PostController@show')->withoutMiddleware('auth'); // untuk menampilkan salah satu form
 });
 
 Route::get('/post', "PostController@index")->name('post.index'); // untuk menampilkan halaman index Post
-Route::get('/post/{post:slug}', 'PostController@show'); // untuk menampilkan salah satu form
+Route::get('/post/{post:slug}', 'PostController@show')->name('post.show'); // untuk menampilkan salah satu form

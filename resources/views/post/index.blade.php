@@ -3,107 +3,101 @@
 @section('page_title', 'All Post')
 @section('content')
 
-<div class="d-flex justify-content-between">
-    <div>
-        @isset($category)
-            <h4>Category: {{ $category->name }}</h4>
-        @endisset
+<div>
+    @isset($category)
+        <h4>Category: {{ $category->name }}</h4>
+    @endisset
 
-        @isset($tag)
-            <h4>Tag: {{ $tag->name }}</h4>
-        @endisset
+    @isset($tag)
+        <h4>Tag: {{ $tag->name }}</h4>
+    @endisset
 
-        @if(!isset($category) && !isset($tag))
-            <h4>All Post</h4>
-        @endif
-    </div>
-    <div>
-        {{-- cek autentikasi dengan if Auth::check() untuk menampilkan tombol --}}
-        @if(Auth::check())
-            <a href="{{ route('post.create') }}" class="btn btn-primary">+ New Post</a>
-        @else
-            <a href="{{ route('login') }}" class="btn btn-primary">Login to create new post</a>
-        @endif
-    </div>
+    @if(!isset($category) && !isset($tag))
+        <h4>All Post</h4>
+    @endif
+    <hr>
 </div>
-<hr>
 
-{{-- menggunakan forelse --}}
-<div class="row mb-2">
-    @forelse ($posts as $post)
-        <div class="col-lg-4 mb-4">
-            <div class="card">
-                {{-- tidak akan muncul dengan cara ini --}}
-                {{-- <img src="{{ asset($post->thumbnail) }}" class="card-img-top" alt="..."> --}}
-                {{-- muncul, tapi akan sangat berantakan --}}
-                {{-- <img src="{{ asset("storage/".$post->thumbnail) }}" class="card-img-top" alt="..."> --}}
-                {{-- menggunakan function takeImage() --}}
-                {{-- <img src="{{ asset($post->takeImage()) }}" class="card-img-top" alt="..."> --}}
-                {{-- menggunakan attribute takeImage, nama functionnya jadi getTakeImageAttribute, get...Attribute --}}
-                {{-- <img src="{{ asset($post->takeImage) }}" class="card-img-top" alt="..."> --}}
-                {{-- tanpa menggunakan asset --}}
-                <img src="{{ $post->takeImage }}" class="card-img-top" style="
-                    height: 270px;
-                    object-fit: cover;
-                    object-position: center;
-                ">
+<div class="row">
+    <div class="col-md-7">
+        {{-- menggunakan forelse --}}
+        @forelse ($posts as $post)
+            <div class="mb-4">
+                <div class="card">
+                    {{-- tidak akan muncul dengan cara ini --}}
+                    {{-- <img src="{{ asset($post->thumbnail) }}" class="card-img-top" alt="..."> --}}
+                    {{-- muncul, tapi akan sangat berantakan --}}
+                    {{-- <img src="{{ asset("storage/".$post->thumbnail) }}" class="card-img-top" alt="..."> --}}
+                    {{-- menggunakan function takeImage() --}}
+                    {{-- <img src="{{ asset($post->takeImage()) }}" class="card-img-top" alt="..."> --}}
+                    {{-- menggunakan attribute takeImage, nama functionnya jadi getTakeImageAttribute, get...Attribute --}}
+                    {{-- <img src="{{ asset($post->takeImage) }}" class="card-img-top" alt="..."> --}}
+                    {{-- tanpa menggunakan asset --}}
+                    <a href="{{ route("post.show", $post->slug) }}">
+                        <img src="{{ $post->takeImage }}" class="card-img-top" style="
+                            height: 400px;
+                            object-fit: cover;
+                            object-position: center;
+                        ">
+                    </a>
 
-                <div class="card-body">
-                    <div class="card-title font-weight-bold">
-                        {{ $post->title }}
-                    </div>
-                    <div class="card-text">
-                        {{-- menampilkan post dengan limit karakter --}}
-                        <div class="mb-2">
-                            {{ Str::limit($post->body, 100, '') }}
+                    <div class="card-body">
+                        <div>
+                            <a href="{{ route('categories.show', $post->category->slug) }}">
+                                <span class="badge bg-secondary">
+                                    {{ $post->category->name }}
+                                </span>
+                            </a>
+                            |
+                            @foreach($post->tags as $tag)
+                                <a href="{{ route('tag.show', $tag->slug) }}">
+                                    <span class="badge bg-secondary">
+                                        {{ $tag->name }}
+                                    </span>
+                                </a>
+                            @endforeach
                         </div>
-                        <div class="">
-                            <a href="/post/{{ $post->slug }}" >Read more...</a>
+
+                        <a href="{{ route("post.show", $post->slug) }}" class="card-title font-weight-bold link text-dark">
+                            {{ $post->title }}
+                        </a>
+                        <div class="card-text my-3 text-secondary">
+                            {{-- menampilkan post dengan limit karakter --}}
+                            {{ Str::limit($post->body, 130, '') }}
                         </div>
-                    </div>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <div>
-                        {{-- menampilkan format tanggal --}}
-                        <div><small>Published on {{ $post->created_at->format('d F Y') }}</small></div>
-                        {{-- menampilkan format kapan terakhir kali diupdate --}}
-                        <div><small>at {{ $post->created_at->diffForHumans() }}</small></div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img width="32" class="rounded-circle" src="{{ $post->author->gravatar() }}" alt="profile picture">
+
+                                <div class="ml-2">
+                                    <small>{{ $post->author->name }}</small>
+                                </div>
+                            </div>
+                            <div class="text-secondary">
+                                <div>
+                                    {{-- menampilkan format tanggal --}}
+                                    <small>Published on {{ $post->created_at->format('d F Y') }}</small>
+                                </div>
+                                {{-- <div> --}}
+                                    {{-- menampilkan format kapan terakhir kali diupdate --}}
+                                    {{-- <small>at {{ $post->created_at->diffForHumans() }}</small> --}}
+                                {{-- </div> --}}
+                            </div>
+                        </div>
                         {{-- mengubah tulisan englishnya menjadi indonesia ada di config/app cari locale ubah dari en ke id --}}
-                    </div>
-                    <div>
-                        {{-- menggunakan auth blade redirected --}}
-                        {{-- @auth
-                            <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
-                        @endauth --}}
-
-                        {{-- if is me?, edit my post pls --}}
-                        {{-- @if(Auth::user()->id == $post->user_id) --}}
-                        {{-- atau --}}
-                        {{-- @if(Auth::user()->is($post->author))
-                            <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
-                        @endif --}}
-
-                        {{-- menggunakan policy --}}
-                        @can('edit', $post)
-                            <a href="/post/{{ $post->slug }}/edit" class="btn btn-sm btn-outline-info">Edit</a>
-                        @endcan
                     </div>
                 </div>
             </div>
-        </div>
-    @empty
-        <div class="col">
-            <div class="alert alert-primary text-center">There are no Post, Why don't create a new one?!</div>
-        </div>
-    @endforelse
+        @empty
+            <div class="col">
+                <div class="alert alert-primary text-center">There are no Post, Why don't create a new one?!</div>
+            </div>
+        @endforelse
+    </div>
 </div>
 
 {{-- menambahkan pagination dengan bawaan blade --}}
-<div class="d-flex justify-content-center">
-    <div>
-        {{ $posts->links() }}
-    </div>
-</div>
+{{ $posts->links() }}
 {{-- ------------------- --}}
 
 {{-- @endsection dan @stop fungsinya sama --}}

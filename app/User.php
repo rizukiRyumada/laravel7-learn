@@ -58,4 +58,9 @@ class User extends Authenticatable
         // ATAU
         return $this->username == "rizukiRyumada"; // ini ada di AuthServiceProvider trueFalsenya
     }
+
+    public function gravatar($size = 150)
+    {
+        return "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $this->email ) ) ) . "?d=mp&s=" . $size;
+    }
 }

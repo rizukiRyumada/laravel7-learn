@@ -305,18 +305,19 @@ class PostController extends Controller
      */
     public function destroy(Post $post){
         // menggunakan if untuk cek otorisasi
-        if(auth()->user()->is($post->author)){
-            $post->tags->detach(); // untuk menghapus tagsnya
+        $this->authorize('update', $post); // menggunakan policy untuk cek otorisasi
+        // if(auth()->user()->is($post->author)){
+            \Storage::delete($post->thumbnail); // hapus file fotonya
+            $post->tags()->detach(); // untuk menghapus tagsnya
             $post->delete();
             session()->flash('success', 'The post was successfully deleted');
-            \Storage::delete($post->thumbnail); // hapus file fotonya
             return redirect()->to('/post');
-        } else {
-            // dd('salah');
-            // abort(403, 'Unauthorized action.');
-            session()->flash('error', "It wasn't your post.");
-            return redirect('post');
-        }
+        // } else {
+        //     // dd('salah');
+        //     // abort(403, 'Unauthorized action.');
+        //     session()->flash('error', "It wasn't your post.");
+        //     return redirect('post');
+        // }
     }
 
 /* -------------------------------------------------------------------------- */

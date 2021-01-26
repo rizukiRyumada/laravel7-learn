@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <body>
     <div id="app">
@@ -33,5 +35,4 @@
         </main>
     </div>
 </body>
-<script src="{{ asset('js/app_main.js') }}"></script>
 </html>

@@ -107,6 +107,7 @@ class Post extends Model
     // public function takeImage() // apabila ingin menggunakan $post->takeImage()
     public function getTakeImageAttribute() // apabila ingin menggunakan $post->takeImage
     {
-        return "/storage/".$this->thumbnail;
+        $image = $this->thumbnail ?: "images/undraw/no-image.svg";
+        return "/storage/".$image;
     }
 }
