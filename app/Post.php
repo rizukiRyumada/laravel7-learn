@@ -18,6 +18,8 @@ class Post extends Model
     // protected $guarded = ['id', 'created_at', 'updated_at', 'edited_at']; // menandakan attribut apa saja yang tidak dapat diisi oleh controller
     /* -------------------------------------------------------------------------- */
 
+    // add relational loaded
+    protected $with = ['author', 'tags', 'category'];
 
     // default nama table dari model class laravel adalah bentuk plural dari nama model
     // protected $table = "posts"; // tidak perlu diaktifkan, karena sudah secara otomatis tanpa harus diidentifikasi

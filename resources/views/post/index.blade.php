@@ -26,6 +26,8 @@
 
 {{-- menambahkan pagination dengan bawaan blade --}}
 {{ $posts->links() }}
+{{-- mengubah style paginasi untuk page ini --}}
+{{-- {{ $posts->links('pagination::tailwind') }} --}}
 {{-- ------------------- --}}
 
 {{-- @endsection dan @stop fungsinya sama --}}

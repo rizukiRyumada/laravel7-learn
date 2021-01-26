@@ -28,6 +28,11 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
+                {{-- serach bar --}}
+                <form action="{{ route('search.post') }}" method="get" class="d-flex">
+                    <input name="query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-info ml-1" type="submit">Search</button>
+                </form>
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">

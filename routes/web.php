@@ -73,6 +73,7 @@ Route::get('/tags/{tag:slug}', 'TagController@show')->name('tag.show');
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/search/post', 'SearchController@post')->name('search.post');
 /* -------------------------------------------------------------------------- */
 
 
