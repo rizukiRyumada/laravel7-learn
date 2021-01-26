@@ -11,4 +11,5 @@
 
 Learn Laravel 7 mentored by Parsinta.
 You can find out the playlist tutorial video right this link below:
-<a href="https://www.youtube.com/watch?v=ucV7ynY4M8A&list=PLRKMmwY3-5MxfIKTn_wZ49XlplwHtz1AV" alt="Learn Laravel 7 by Parsinta"></a>
+
+[Learn Laravel 7 by Parsinta ](https://www.youtube.com/watch?v=ucV7ynY4M8A&list=PLRKMmwY3-5MxfIKTn_wZ49XlplwHtz1AV)
